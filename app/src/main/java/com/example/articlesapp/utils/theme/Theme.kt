@@ -1,4 +1,4 @@
-package com.example.articlesapp.utils
+package com.example.articlesapp.utils.theme
 
 import android.app.Activity
 import android.os.Build
