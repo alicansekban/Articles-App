@@ -15,7 +15,8 @@ suspend fun <T> safeApiCall(
         } catch (throwable: Throwable) {
             when (throwable) {
                 is IOException -> {
-                    ResultWrapper.NetworkError
+                    val message = throwable.message
+                    ResultWrapper.NetworkError(message)
                 }
 
                 is HttpException -> {
