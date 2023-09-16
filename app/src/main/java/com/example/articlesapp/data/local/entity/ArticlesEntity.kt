@@ -18,7 +18,8 @@ data class ArticlesEntity(
     val sourceId: String? = null,
     val title: String? = null,
     val url: String? = null,
-    val content: String? = null
+    val content: String? = null,
+    val category : String? = null
 )
 
 data class Source(

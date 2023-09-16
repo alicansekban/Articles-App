@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.blankj.utilcode.util.SPUtils
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.articlesapp.R
@@ -47,6 +48,7 @@ import com.example.articlesapp.domain.model.Error
 import com.example.articlesapp.domain.model.Loading
 import com.example.articlesapp.domain.model.Success
 import com.example.articlesapp.ui.viewmodel.SharedHeadLinesViewModel
+import com.example.articlesapp.utils.Constant
 import com.example.articlesapp.utils.openChrome
 import com.example.articlesapp.utils.toParsedString
 
@@ -56,8 +58,10 @@ fun HomeScreen(
     viewModel: SharedHeadLinesViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+
+    val country = SPUtils.getInstance().getString(Constant.QUERY_COUNTRY, "tr")
     LaunchedEffect(key1 = Unit) {
-        viewModel.getArticles("", "tr")
+        viewModel.getArticles("general", country)
     }
     val articles by viewModel.articles.collectAsStateWithLifecycle()
 
@@ -210,7 +214,6 @@ fun ArticleItem(article: ArticleUIModel, openWeb: (String) -> Unit) {
         }
     }
 }
-
 
 
 @OptIn(ExperimentalGlideComposeApi::class)

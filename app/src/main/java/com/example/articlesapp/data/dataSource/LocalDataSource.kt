@@ -8,12 +8,15 @@ import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(private val db : AppDataBase) {
 
-    fun getArticles() : Flow<List<ArticlesEntity>> {
-        return db.articlesDao().getArticles()
+    fun getArticles(category:String = "") : List<ArticlesEntity> {
+        return db.articlesDao().getArticles(category)
     }
 
     suspend fun insertArticleList(list : List<ArticlesEntity>) {
         db.articlesDao().insertArticleList(list)
+    }
+     fun deleteArticleList() {
+        db.articlesDao().deleteArticles()
     }
 
     fun getArticle(id: Int) : ArticlesEntity {

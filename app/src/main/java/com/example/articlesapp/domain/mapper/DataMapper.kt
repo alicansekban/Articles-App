@@ -9,7 +9,7 @@ import javax.inject.Inject
 class DataMapper @Inject constructor() {
 
     // ileride kullanma ihtimaline karşı response olduğu gibi entity'e dönüştürülüp db ekleniyor
-    fun mapToEntity(item: ArticlesItem): ArticlesEntity {
+    fun mapToEntity(item: ArticlesItem,category : String): ArticlesEntity {
         return ArticlesEntity(
             publishedAt = item.publishedAt?.toDate(),
             author = item.author,
@@ -19,7 +19,8 @@ class DataMapper @Inject constructor() {
             sourceId = item.source?.id,
             title = item.title,
             url = item.url,
-            content = item.content
+            content = item.content,
+            category = category
         )
     }
 

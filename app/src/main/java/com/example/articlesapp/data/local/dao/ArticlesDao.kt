@@ -18,6 +18,10 @@ interface ArticlesDao {
     @Query("SELECT * FROM articles WHERE id = :id")
     fun getArticle(id: Int): ArticlesEntity
 
-    @Query("select * from articles")
-    fun getArticles(): Flow<List<ArticlesEntity>>
+    @Query("select * from articles Where category = :category")
+    fun getArticles(category : String): List<ArticlesEntity>
+
+
+    @Query("delete from articles")
+    fun deleteArticles()
 }

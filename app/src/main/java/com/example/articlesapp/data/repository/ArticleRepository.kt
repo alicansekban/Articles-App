@@ -6,6 +6,7 @@ import com.example.articlesapp.data.local.entity.ArticlesEntity
 import com.example.articlesapp.domain.mapper.DataMapper
 import com.example.articlesapp.utils.ResultWrapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -14,7 +15,7 @@ class ArticleRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val dataMapper: DataMapper
 ) {
-    fun fetchData(category: String, country : String): Flow<ResultWrapper<List<ArticlesEntity>>> {
+    fun fetchData(category: String = "", country : String): Flow<ResultWrapper<List<ArticlesEntity>>> {
 
         return flow {
             // burada yaptığımız remote dan çekip db'ye ekleme işlemi
@@ -31,15 +32,22 @@ class ArticleRepository @Inject constructor(
 
                 is ResultWrapper.Success -> {
                     val response = apiData.value.articles
-                    if (response?.isNotEmpty() == true) {
-                        localDataSource.insertArticleList(response.map { dataMapper.mapToEntity(it!!) })
+                    val listFromDb = localDataSource.getArticles()
+                    val articlesToAdd = response?.filter { responseArticle ->
+                        listFromDb.none { dbArticle ->
+                            dbArticle.title == responseArticle?.title
+                        }
+                    } ?: emptyList()
+                    if (articlesToAdd.isNotEmpty()) {
+                        response?.map { dataMapper.mapToEntity(it!!,category) }
+                            ?.let { localDataSource.insertArticleList(it) }
                     }
                 }
             }
             // offline first mantığı ile veriyi sadece db'den çekip domain katmanına gönderiyoruz.
-            localDataSource.getArticles().collect {
-                emit(ResultWrapper.Success(it))
-            }
+
+                emit(ResultWrapper.Success(localDataSource.getArticles(category)))
+
         }
     }
  }
