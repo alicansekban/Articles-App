@@ -14,7 +14,6 @@ class ArticleRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val dataMapper: DataMapper
 ) {
-
     fun fetchData(category: String, country : String): Flow<ResultWrapper<List<ArticlesEntity>>> {
 
         return flow {
