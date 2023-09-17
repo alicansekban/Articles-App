@@ -5,6 +5,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,6 +32,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -42,6 +48,7 @@ import com.blankj.utilcode.util.SPUtils
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.articlesapp.R
+import com.example.articlesapp.customViews.BottomSheet
 import com.example.articlesapp.customViews.TopBar
 import com.example.articlesapp.domain.model.ArticleUIModel
 import com.example.articlesapp.domain.model.Error
@@ -49,12 +56,13 @@ import com.example.articlesapp.domain.model.Loading
 import com.example.articlesapp.domain.model.Success
 import com.example.articlesapp.ui.viewmodel.SharedHeadLinesViewModel
 import com.example.articlesapp.utils.Constant
+import com.example.articlesapp.utils.CountrySelectModel
 import com.example.articlesapp.utils.openChrome
 import com.example.articlesapp.utils.toParsedString
 
 @Composable
 fun HomeScreen(
-    menuClicked: () -> Unit,
+    countryItems : List<CountrySelectModel>,
     viewModel: SharedHeadLinesViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -86,7 +94,10 @@ fun HomeScreen(
             if (response.isNotEmpty()) {
                 statelessHomeScreen(
                     response,
-                    menuClicked = menuClicked
+                    countryItems = countryItems,
+                    countrySelected = {
+                        viewModel.getArticles("general",it.code)
+                    }
                 )
             } else {
                 EmptyScreen(
@@ -117,10 +128,35 @@ fun EmptyScreen(
 @Composable
 fun statelessHomeScreen(
     articles: List<ArticleUIModel>,
-    menuClicked: () -> Unit
+    countryItems: List<CountrySelectModel>,
+    countrySelected : (CountrySelectModel) -> Unit = {}
 ) {
     val context = LocalContext.current
+    var showBottomSheet by rememberSaveable {
+        mutableStateOf(false)
+    }
+    if (showBottomSheet) {
+        BottomSheet(onDismissRequest = { showBottomSheet = false }, countrySelected = {selectedCountry ->
+            countryItems.forEach {
+                it.selected = false
+            }
+            selectedCountry.selected = true
+            countrySelected(selectedCountry)
+            showBottomSheet = false}, items = countryItems)
+    }
+
     Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    showBottomSheet = true
+                }
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Icon(imageVector = Icons.Default.FilterAlt, contentDescription = "filter")
+        }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -138,7 +174,9 @@ fun statelessHomeScreen(
                 })
             }
         }
+
     }
+
 
 }
 

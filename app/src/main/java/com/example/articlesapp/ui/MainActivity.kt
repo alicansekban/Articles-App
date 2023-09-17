@@ -43,6 +43,7 @@ import com.example.articlesapp.ui.home.HomeScreen
 import com.example.articlesapp.ui.sports.SportsHeadLinesScreen
 import com.example.articlesapp.ui.technology.TechnologyScreen
 import com.example.articlesapp.ui.viewmodel.SharedHeadLinesViewModel
+import com.example.articlesapp.utils.CountrySelectModel
 import com.example.articlesapp.utils.NavigationModalItem
 import com.example.articlesapp.utils.ScreenRoutes
 import com.example.articlesapp.utils.theme.ArticlesAppTheme
@@ -75,6 +76,28 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+                val countryItems = mutableListOf(
+                    CountrySelectModel(
+                        name = "Türkiye",
+                        code = "tr",
+                        selected = true
+                    ),
+                    CountrySelectModel(
+                        name = "Amerika",
+                        code = "us",
+                        selected = false
+                    ),
+                    CountrySelectModel(
+                        name = "Fransa",
+                        code = "fr",
+                        selected = false
+                    ),
+                    CountrySelectModel(
+                        name = "Britanya",
+                        code = "gb",
+                        selected = false
+                    ),
+                )
                 val items = listOf(
                     NavigationModalItem(
                         title = "Home",
@@ -165,11 +188,7 @@ class MainActivity : ComponentActivity() {
 
                                 composable(ScreenRoutes.HomeRoutes.HomeRoute) {
                                     HomeScreen(
-                                        menuClicked = {
-                                            scope.launch {
-                                                drawerState.open()
-                                            }
-                                        }
+                                        countryItems = countryItems
                                     )
                                 }
                                 composable(ScreenRoutes.HeadLineRoutes.SportHeadLines) {
