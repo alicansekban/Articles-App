@@ -77,13 +77,6 @@ fun StatelessSportsScreen(
 
     val context = LocalContext.current
     Column {
-        TopBar(
-            title = "Sports Headlines",
-            showBackButton = false,
-            showMenuButton = true,
-            onMenuClick = { menuClicked() },
-            onBackClick = { })
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

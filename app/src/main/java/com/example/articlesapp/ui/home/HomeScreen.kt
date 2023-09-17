@@ -91,7 +91,7 @@ fun HomeScreen(
             } else {
                 EmptyScreen(
                     retryClicked = {
-                        viewModel.getArticles("", "tr")
+                        viewModel.getArticles("general", country)
                     }
                 )
             }
@@ -121,13 +121,6 @@ fun statelessHomeScreen(
 ) {
     val context = LocalContext.current
     Column {
-        TopBar(
-            title = "Home Page",
-            showBackButton = false,
-            showMenuButton = true,
-            onMenuClick = { menuClicked() },
-            onBackClick = { })
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

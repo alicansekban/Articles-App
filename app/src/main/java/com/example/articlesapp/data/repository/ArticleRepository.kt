@@ -33,14 +33,19 @@ class ArticleRepository @Inject constructor(
                 is ResultWrapper.Success -> {
                     val response = apiData.value.articles
                     val listFromDb = localDataSource.getArticles()
-                    val articlesToAdd = response?.filter { responseArticle ->
-                        listFromDb.none { dbArticle ->
-                            dbArticle.title == responseArticle?.title
+                    val listToAddDb = mutableListOf<ArticlesEntity>()
+                    response?.forEach { responseArticle ->
+                        // Makale veritabanında var mı kontrol edin
+                        listFromDb.filter { dbArticle ->
+                            dbArticle.title != responseArticle?.title
+                        }.firstNotNullOfOrNull {
+                            listToAddDb.add(it)
                         }
-                    } ?: emptyList()
-                    if (articlesToAdd.isNotEmpty()) {
+                    }
+
+                    if (listToAddDb.isNotEmpty()) {
                         response?.map { dataMapper.mapToEntity(it!!,category) }
-                            ?.let { localDataSource.insertArticleList(it) }
+                            .let { it?.let { it1 -> localDataSource.insertArticleList(it1) } }
                     }
                 }
             }

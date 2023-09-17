@@ -18,6 +18,7 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
@@ -34,6 +35,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.articlesapp.base.sharedViewModel
+import com.example.articlesapp.customViews.TopBar
 import com.example.articlesapp.graph.drawerModalGraph
 import com.example.articlesapp.ui.business.BusinessScreen
 import com.example.articlesapp.ui.health.HealthScreen
@@ -60,7 +62,7 @@ class MainActivity : ComponentActivity() {
                     if (route == "-1") {
                         navController.popBackStack()
                     } else {
-                        navController.navigate(route){
+                        navController.navigate(route) {
                             // Pop up to the start destination of the graph to
                             // avoid building up a large stack of destinations
                             // on the back stack as users select items
@@ -140,53 +142,75 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }, drawerState = drawerState) {
-                        NavHost(navController = navController, startDestination = "home") {
+                        Scaffold(
 
-                            composable(ScreenRoutes.HomeRoutes.HomeRoute) {
-                                HomeScreen(
-                                    menuClicked = {
+                            topBar = {
+                                TopBar(
+                                    title = "Home Page",
+                                    showBackButton = false,
+                                    showMenuButton = true,
+                                    onMenuClick = {
                                         scope.launch {
                                             drawerState.open()
                                         }
-                                    }
-                                )
+                                    },
+                                    onBackClick = { })
                             }
-                            composable(ScreenRoutes.HeadLineRoutes.SportHeadLines) {
-                                SportsHeadLinesScreen(
-                                    menuClicked = {
-                                        scope.launch {
-                                            drawerState.open()
+                        ) { paddingValues ->
+                            NavHost(
+                                navController = navController,
+                                startDestination = "home",
+                                modifier = Modifier.padding(paddingValues)
+                            ) {
+
+                                composable(ScreenRoutes.HomeRoutes.HomeRoute) {
+                                    HomeScreen(
+                                        menuClicked = {
+                                            scope.launch {
+                                                drawerState.open()
+                                            }
                                         }
-                                    }
-                                )
-                            }
-                            composable(ScreenRoutes.HeadLineRoutes.TechnologyHeadLines) {
-                                TechnologyScreen(
-                                    menuClicked = {
-                                        scope.launch {
-                                            drawerState.open()
+                                    )
+                                }
+                                composable(ScreenRoutes.HeadLineRoutes.SportHeadLines) {
+                                    SportsHeadLinesScreen(
+                                        menuClicked = {
+                                            scope.launch {
+                                                drawerState.open()
+                                            }
                                         }
-                                    }
-                                )
-                            }
-                            composable(ScreenRoutes.HeadLineRoutes.BusinessHeadLines) {
-                                BusinessScreen(
-                                    menuClicked = {
-                                        scope.launch {
-                                            drawerState.open()
+                                    )
+                                }
+                                composable(ScreenRoutes.HeadLineRoutes.TechnologyHeadLines) {
+                                    TechnologyScreen(
+                                        menuClicked = {
+                                            scope.launch {
+                                                drawerState.open()
+                                            }
                                         }
-                                    }
-                                )
-                            }
-                            composable(ScreenRoutes.HeadLineRoutes.HealthHeadLines) {
-                                HealthScreen(
-                                    menuClicked = {
-                                        scope.launch {
-                                            drawerState.open()
+                                    )
+                                }
+                                composable(ScreenRoutes.HeadLineRoutes.BusinessHeadLines) {
+                                    BusinessScreen(
+                                        menuClicked = {
+                                            scope.launch {
+                                                drawerState.open()
+                                            }
                                         }
-                                    }
-                                )
+                                    )
+                                }
+                                composable(ScreenRoutes.HeadLineRoutes.HealthHeadLines) {
+                                    HealthScreen(
+                                        menuClicked = {
+                                            scope.launch {
+                                                drawerState.open()
+                                            }
+                                        }
+                                    )
+                                }
                             }
+
+
                         }
                     }
 
