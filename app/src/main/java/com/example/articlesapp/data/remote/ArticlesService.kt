@@ -14,6 +14,7 @@ interface ArticlesService {
 
     @GET("top-headlines?pageSize=50&apiKey=${Constant.API_KEY}")
     suspend fun getTopHeadLines(
+        @Query("page") page : Int,
         @Query("category") category : String?,
         @Query("country") country : String?) : BaseResponse
 }

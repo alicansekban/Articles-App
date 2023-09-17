@@ -46,6 +46,7 @@ fun BottomSheet(
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest() },
         sheetState = sheetState,
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp)
     ) {
         CountrySelectSheet(
             countrySelected = {
@@ -72,7 +73,7 @@ fun CountrySelectSheet(
         modifier = Modifier
             .wrapContentSize()
             .padding(horizontal = 7.dp)
-            .padding(bottom = 12.dp),
+            .padding(bottom = 8.dp),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -81,7 +82,7 @@ fun CountrySelectSheet(
                 .wrapContentHeight()
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
-            elevation = CardDefaults.cardElevation(0.dp),
+            elevation = CardDefaults.cardElevation(2.dp),
             shape = RoundedCornerShape(15.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
         ) {
@@ -122,6 +123,7 @@ fun CountrySelectRowView(item: CountrySelectModel, modifier: Modifier, itemClick
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(vertical = 18.dp)
+                .padding(top = 4.dp)
                 .clickable {
                     itemClicked()
                 },

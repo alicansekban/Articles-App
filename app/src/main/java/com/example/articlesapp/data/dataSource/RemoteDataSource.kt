@@ -11,6 +11,7 @@ class RemoteDataSource @Inject constructor(private val api: ArticlesService) {
     suspend fun getDataFromRemote(category : String,country : String): ResultWrapper<BaseResponse> {
         return safeApiCall(Dispatchers.IO) {
             api.getTopHeadLines(
+                1,
                 category, country
             )
         }

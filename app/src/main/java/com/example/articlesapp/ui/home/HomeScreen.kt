@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.blankj.utilcode.util.SPUtils
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -62,16 +63,17 @@ import com.example.articlesapp.utils.toParsedString
 
 @Composable
 fun HomeScreen(
-    countryItems : List<CountrySelectModel>,
+    countryItems: List<CountrySelectModel>,
     viewModel: SharedHeadLinesViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
 
     val country = SPUtils.getInstance().getString(Constant.QUERY_COUNTRY, "tr")
     LaunchedEffect(key1 = Unit) {
-        viewModel.getArticles("general", country)
+        viewModel.getArticlesWithPaging("general", country)
     }
     val articles by viewModel.articles.collectAsStateWithLifecycle()
+    val articlesPaging = viewModel.articlesPaging.collectAsLazyPagingItems()
 
     when (articles) {
         is Error -> {
@@ -85,7 +87,7 @@ fun HomeScreen(
 
         is Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+             //   CircularProgressIndicator()
             }
         }
 
@@ -96,7 +98,7 @@ fun HomeScreen(
                     response,
                     countryItems = countryItems,
                     countrySelected = {
-                        viewModel.getArticles("general",it.code)
+                        viewModel.getArticles("general", it.code)
                     }
                 )
             } else {
@@ -129,20 +131,25 @@ fun EmptyScreen(
 fun statelessHomeScreen(
     articles: List<ArticleUIModel>,
     countryItems: List<CountrySelectModel>,
-    countrySelected : (CountrySelectModel) -> Unit = {}
+    countrySelected: (CountrySelectModel) -> Unit = {}
 ) {
     val context = LocalContext.current
     var showBottomSheet by rememberSaveable {
         mutableStateOf(false)
     }
     if (showBottomSheet) {
-        BottomSheet(onDismissRequest = { showBottomSheet = false }, countrySelected = {selectedCountry ->
-            countryItems.forEach {
-                it.selected = false
-            }
-            selectedCountry.selected = true
-            countrySelected(selectedCountry)
-            showBottomSheet = false}, items = countryItems)
+        BottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            countrySelected = { selectedCountry ->
+                countryItems.forEach {
+                    it.selected = false
+                }
+                selectedCountry.selected = true
+                countrySelected(selectedCountry)
+                showBottomSheet = false
+            },
+            items = countryItems
+        )
     }
 
     Column {
