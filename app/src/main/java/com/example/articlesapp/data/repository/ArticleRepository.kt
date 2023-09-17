@@ -5,6 +5,7 @@ import com.example.articlesapp.data.dataSource.RemoteDataSource
 import com.example.articlesapp.data.local.entity.ArticlesEntity
 import com.example.articlesapp.domain.mapper.DataMapper
 import com.example.articlesapp.utils.ResultWrapper
+import com.example.caseapp.base.ArticlesItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -32,21 +33,20 @@ class ArticleRepository @Inject constructor(
 
                 is ResultWrapper.Success -> {
                     val response = apiData.value.articles
-                    val listFromDb = localDataSource.getArticles()
-                    val listToAddDb = mutableListOf<ArticlesEntity>()
-                    response?.forEach { responseArticle ->
-                        // Makale veritabanında var mı kontrol edin
-                        listFromDb.filter { dbArticle ->
-                            dbArticle.title != responseArticle?.title
-                        }.firstNotNullOfOrNull {
-                            listToAddDb.add(it)
+                    val listFromDb = localDataSource.getArticles(category)
+                    val listToAddDb = mutableListOf<ArticlesItem?>()
+
+                    response?.forEach { responseItem ->
+                        val hasTheItem = listFromDb.any { db ->
+                            db.title == responseItem?.title
+                        }
+                        if (!hasTheItem){
+                            listToAddDb.add(responseItem)
                         }
                     }
+                    localDataSource.insertArticleList(listToAddDb.map { dataMapper.mapToEntity(it!!,category) })
 
-                    if (listToAddDb.isNotEmpty()) {
-                        response?.map { dataMapper.mapToEntity(it!!,category) }
-                            .let { it?.let { it1 -> localDataSource.insertArticleList(it1) } }
-                    }
+
                 }
             }
             // offline first mantığı ile veriyi sadece db'den çekip domain katmanına gönderiyoruz.
