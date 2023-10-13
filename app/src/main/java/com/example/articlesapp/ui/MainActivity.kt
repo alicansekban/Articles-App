@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -16,6 +17,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
@@ -30,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -135,6 +139,9 @@ class MainActivity : ComponentActivity() {
                 var selectedItemIndex by rememberSaveable {
                     mutableIntStateOf(0)
                 }
+                var selectedBottomItemIndex by rememberSaveable {
+                    mutableIntStateOf(0)
+                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -142,7 +149,7 @@ class MainActivity : ComponentActivity() {
                     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                     ModalNavigationDrawer(drawerContent = {
                         ModalDrawerSheet {
-                            items.forEachIndexed { index, item ->
+                            items.take(2).forEachIndexed { index, item ->
                                 NavigationDrawerItem(
                                     label = { Text(text = item.title) },
                                     selected = index == selectedItemIndex,
@@ -166,7 +173,6 @@ class MainActivity : ComponentActivity() {
                         }
                     }, drawerState = drawerState) {
                         Scaffold(
-
                             topBar = {
                                 TopBar(
                                     title = "Home Page",
@@ -228,8 +234,6 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
-
-
                         }
                     }
 

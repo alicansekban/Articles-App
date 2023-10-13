@@ -23,7 +23,6 @@ class GetArticleUseCase @Inject constructor(
     ): Flow<BaseUIModel<List<ArticleUIModel>>> {
         return flow {
             emit(Loading())
-
             // repositoryden çektiğimiz result'u uimodel'imize çevirip gerekli dataları mapper yapıyoruz.
             articleRepository.fetchData(category, country).collect { data ->
                 when (data) {

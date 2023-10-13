@@ -44,6 +44,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.blankj.utilcode.util.SPUtils
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -60,6 +62,7 @@ import com.example.articlesapp.utils.Constant
 import com.example.articlesapp.utils.CountrySelectModel
 import com.example.articlesapp.utils.openChrome
 import com.example.articlesapp.utils.toParsedString
+import kotlin.random.Random
 
 @Composable
 fun HomeScreen(
@@ -69,12 +72,10 @@ fun HomeScreen(
     val context = LocalContext.current
 
     val country = SPUtils.getInstance().getString(Constant.QUERY_COUNTRY, "tr")
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getArticlesWithPaging("general", country)
-    }
     val articles by viewModel.articles.collectAsStateWithLifecycle()
-    val articlesPaging = viewModel.articlesPaging.collectAsLazyPagingItems()
-
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getArticles("general", country)
+    }
     when (articles) {
         is Error -> {
             Toast.makeText(
@@ -87,7 +88,7 @@ fun HomeScreen(
 
         is Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-             //   CircularProgressIndicator()
+               CircularProgressIndicator()
             }
         }
 
