@@ -35,23 +35,13 @@ class ArticleRepository @Inject constructor(
 
                 is ResultWrapper.Success -> {
                     val response = apiData.value.articles
-                    val listFromDb = localDataSource.getArticles(category)
-                    val listToAddDb = mutableListOf<ArticlesItem?>()
-
-                    response?.forEach { responseItem ->
-                        val hasTheItem = listFromDb.any { db ->
-                            db.title == responseItem?.title
-                        }
-                        if (!hasTheItem) {
-                            listToAddDb.add(responseItem)
-                        }
-                    }
-                    localDataSource.insertArticleList(listToAddDb.map {
+                    localDataSource.deleteArticleList()
+                    response?.map {
                         dataMapper.mapToEntity(
                             it!!,
                             category
                         )
-                    })
+                    }?.let { localDataSource.insertArticleList(it) }
 
 
                 }

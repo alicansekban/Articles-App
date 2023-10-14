@@ -1,8 +1,7 @@
 package com.example.articlesapp.ui.home
 
-import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,8 +38,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -88,7 +93,7 @@ fun HomeScreen(
 
         is Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-               CircularProgressIndicator()
+                CircularProgressIndicator()
             }
         }
 
@@ -169,7 +174,8 @@ fun statelessHomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            state = rememberLazyListState()
+            state = rememberLazyListState(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
 
             items(
@@ -194,63 +200,60 @@ fun ArticleItem(article: ArticleUIModel, openWeb: (String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { article.url?.let { openWeb(it) } }
-            .padding(vertical = 8.dp),
+            .height(120.dp)
+            .padding(top = 4.dp)
+            .clickable { article.url?.let { openWeb(it) } },
         shape = RoundedCornerShape(5.dp),
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(10.dp),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            loadImage(
-                url = article.urlToImage ?: "",
+
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.icons8_news_50),
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .background(MaterialTheme.colorScheme.secondary)
+                    .height(50.dp)
+                    .background(MaterialTheme.colorScheme.secondary),
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = article.title ?: "",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = article.description ?: "",
-                maxLines = 4,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxWidth().fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    imageVector = Icons.Default.DateRange,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = article.publishedAt?.toParsedString() ?: "",
-                    style = MaterialTheme.typography.bodySmall
+                    text = article.title ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
                 )
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = article.description ?: "",
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = article.publishedAt?.toParsedString() ?: "",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
         }
+
     }
 }
 
@@ -270,8 +273,8 @@ fun loadImage(
             modifier = modifier,
             contentScale = ContentScale.FillBounds
         ) {
-            it.error(R.drawable.ic_launcher_foreground)
-                .placeholder(R.drawable.ic_launcher_foreground)
+            it.error(R.drawable.icons8_news_50)
+                .placeholder(R.drawable.icons8_news_50)
                 .load(url)
 
         }
