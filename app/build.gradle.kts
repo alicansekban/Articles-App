@@ -68,30 +68,30 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation ("androidx.navigation:navigation-testing:2.7.2")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.7.2")
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
 
-    implementation( platform("androidx.compose:compose-bom:2023.04.01"))
+    implementation(platform("androidx.compose:compose-bom:2023.04.01"))
 
-    implementation ("androidx.compose.material:material-icons-core")
+    implementation("androidx.compose.material:material-icons-core")
     // Optional - Add full set of material icons
-    implementation ("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.material:material-icons-extended")
 
     // Optional - Integration with activities
-    implementation ("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.activity:activity-compose:1.7.2")
     // Optional - Integration with ViewModels
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     // Optional - Integration with RxJava
-    implementation ("androidx.compose.runtime:runtime-rxjava2")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2.")
-    implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
-    implementation ("androidx.navigation:navigation-compose:2.7.2")
+    implementation("androidx.compose.runtime:runtime-rxjava2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2.")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    implementation("androidx.navigation:navigation-compose:2.7.2")
 
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
 
     // hilt
@@ -106,8 +106,7 @@ dependencies {
 
 
     implementation("com.airbnb.android:lottie-compose:5.2.0")
-    implementation ("androidx.paging:paging-compose:3.2.1")
-
+    implementation("androidx.paging:paging-compose:3.2.1")
 
 
     // Coroutine and Lifecycle
@@ -128,22 +127,18 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
-    implementation ("androidx.draganddrop:draganddrop:1.0.0")
+    implementation("androidx.draganddrop:draganddrop:1.0.0")
 
     // Youtube Player
-    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
 
-
-    // Glide
-    val glideVersion = "4.12.0"
-    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.5")
-    ksp("com.github.bumptech.glide:compiler:$glideVersion")
-
+    //
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Room
     implementation("androidx.room:room-runtime:2.5.2")
     ksp("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
 
-    implementation ("androidx.room:room-paging:2.5.2")
+    implementation("androidx.room:room-paging:2.5.2")
 }

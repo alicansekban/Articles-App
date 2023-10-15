@@ -1,7 +1,6 @@
 package com.example.articlesapp.ui.home
 
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,31 +32,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
+import coil.compose.AsyncImage
 import com.blankj.utilcode.util.SPUtils
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.example.articlesapp.R
 import com.example.articlesapp.customViews.BottomSheet
-import com.example.articlesapp.customViews.TopBar
 import com.example.articlesapp.domain.model.ArticleUIModel
 import com.example.articlesapp.domain.model.Error
 import com.example.articlesapp.domain.model.Loading
@@ -67,7 +57,6 @@ import com.example.articlesapp.utils.Constant
 import com.example.articlesapp.utils.CountrySelectModel
 import com.example.articlesapp.utils.openChrome
 import com.example.articlesapp.utils.toParsedString
-import kotlin.random.Random
 
 @Composable
 fun HomeScreen(
@@ -257,8 +246,6 @@ fun ArticleItem(article: ArticleUIModel, openWeb: (String) -> Unit) {
     }
 }
 
-
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun loadImage(
     url: String, modifier: Modifier
@@ -267,16 +254,11 @@ fun loadImage(
         modifier = modifier,
         shape = RoundedCornerShape(10.dp)
     ) {
-        GlideImage(
+        AsyncImage(
             model = url,
             contentDescription = "loadImage",
             modifier = modifier,
             contentScale = ContentScale.FillBounds
-        ) {
-            it.error(R.drawable.icons8_news_50)
-                .placeholder(R.drawable.icons8_news_50)
-                .load(url)
-
-        }
+        )
     }
 }

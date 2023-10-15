@@ -5,11 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,36 +14,25 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.articlesapp.base.sharedViewModel
 import com.example.articlesapp.customViews.TopBar
-import com.example.articlesapp.graph.drawerModalGraph
-import com.example.articlesapp.ui.business.BusinessScreen
-import com.example.articlesapp.ui.health.HealthScreen
 import com.example.articlesapp.ui.home.HomeScreen
-import com.example.articlesapp.ui.sports.SportsHeadLinesScreen
-import com.example.articlesapp.ui.technology.TechnologyScreen
-import com.example.articlesapp.ui.viewmodel.SharedHeadLinesViewModel
+import com.example.articlesapp.ui.sports.SavedHeadLinesScreen
+import com.example.articlesapp.utils.CategorySelectModel
 import com.example.articlesapp.utils.CountrySelectModel
 import com.example.articlesapp.utils.NavigationModalItem
 import com.example.articlesapp.utils.ScreenRoutes
@@ -102,6 +88,32 @@ class MainActivity : ComponentActivity() {
                         selected = false
                     ),
                 )
+                val categoryItems = mutableListOf(
+                    CategorySelectModel(
+                        name = "general",
+                        selected = true
+                    ),
+                    CategorySelectModel(
+                        name = "sports",
+                        selected = false
+                    ),
+                    CategorySelectModel(
+                        name = "business",
+                        selected = false
+                    ),
+                    CategorySelectModel(
+                        name = "science",
+                        selected = false
+                    ),
+                    CategorySelectModel(
+                        name = "health",
+                        selected = false
+                    ),
+                    CategorySelectModel(
+                        name = "entertainment",
+                        selected = false
+                    )
+                )
                 val items = listOf(
                     NavigationModalItem(
                         title = "Home",
@@ -109,31 +121,7 @@ class MainActivity : ComponentActivity() {
                         unSelectedIcon = Icons.Outlined.Home,
                         route = ScreenRoutes.HomeRoutes.HomeRoute
 
-                    ),
-                    NavigationModalItem(
-                        title = "Sport Headlines",
-                        selectedIcon = Icons.Filled.Favorite,
-                        unSelectedIcon = Icons.Outlined.FavoriteBorder,
-                        route = ScreenRoutes.HeadLineRoutes.SportHeadLines
-                    ),
-                    NavigationModalItem(
-                        title = "Technology Headlines",
-                        selectedIcon = Icons.Filled.Favorite,
-                        unSelectedIcon = Icons.Outlined.FavoriteBorder,
-                        route = ScreenRoutes.HeadLineRoutes.TechnologyHeadLines
-                    ),
-                    NavigationModalItem(
-                        title = "Business Headlines",
-                        selectedIcon = Icons.Filled.Favorite,
-                        unSelectedIcon = Icons.Outlined.FavoriteBorder,
-                        route = ScreenRoutes.HeadLineRoutes.BusinessHeadLines
-                    ),
-                    NavigationModalItem(
-                        title = "Health Headlines",
-                        selectedIcon = Icons.Filled.Favorite,
-                        unSelectedIcon = Icons.Outlined.FavoriteBorder,
-                        route = ScreenRoutes.HeadLineRoutes.HealthHeadLines
-                    ),
+                    )
                 )
                 val scope = rememberCoroutineScope()
                 var selectedItemIndex by rememberSaveable {
@@ -197,35 +185,8 @@ class MainActivity : ComponentActivity() {
                                         countryItems = countryItems
                                     )
                                 }
-                                composable(ScreenRoutes.HeadLineRoutes.SportHeadLines) {
-                                    SportsHeadLinesScreen(
-                                        menuClicked = {
-                                            scope.launch {
-                                                drawerState.open()
-                                            }
-                                        }
-                                    )
-                                }
-                                composable(ScreenRoutes.HeadLineRoutes.TechnologyHeadLines) {
-                                    TechnologyScreen(
-                                        menuClicked = {
-                                            scope.launch {
-                                                drawerState.open()
-                                            }
-                                        }
-                                    )
-                                }
-                                composable(ScreenRoutes.HeadLineRoutes.BusinessHeadLines) {
-                                    BusinessScreen(
-                                        menuClicked = {
-                                            scope.launch {
-                                                drawerState.open()
-                                            }
-                                        }
-                                    )
-                                }
-                                composable(ScreenRoutes.HeadLineRoutes.HealthHeadLines) {
-                                    HealthScreen(
+                                composable(ScreenRoutes.HeadLineRoutes.SavedHeadLines) {
+                                    SavedHeadLinesScreen(
                                         menuClicked = {
                                             scope.launch {
                                                 drawerState.open()

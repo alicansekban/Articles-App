@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.blankj.utilcode.util.SPUtils
-import com.example.articlesapp.customViews.TopBar
 import com.example.articlesapp.domain.model.ArticleUIModel
 import com.example.articlesapp.domain.model.Error
 import com.example.articlesapp.domain.model.Loading
@@ -31,7 +29,7 @@ import com.example.articlesapp.utils.Constant
 import com.example.articlesapp.utils.openChrome
 
 @Composable
-fun SportsHeadLinesScreen(
+fun SavedHeadLinesScreen(
     menuClicked: () -> Unit,
     viewModel: SharedHeadLinesViewModel = hiltViewModel()
 ) {

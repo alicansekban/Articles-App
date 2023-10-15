@@ -6,7 +6,7 @@ class ScreenRoutes {
 
     }
     object HeadLineRoutes {
-        const val SportHeadLines = "sport_headlines"
+        const val SavedHeadLines = "saved_headlines"
         const val TechnologyHeadLines = "technology_headlines"
         const val BusinessHeadLines = "business_headlines"
         const val HealthHeadLines = "health_headlines"
